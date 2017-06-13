@@ -127,7 +127,7 @@
     else if (_type == Framework) {
         return PBXFrameworksBuildPhaseType;
     }
-    else if (_type == ImageResourcePNG || _type == HTML || _type == Bundle || _type == AssetCatalog ||  _type == PropertyList || _type == LocalizableStrings) {
+    else if (_type == ImageResourcePNG || _type == ImageResourceTiff || _type == HTML || _type == Bundle || _type == AssetCatalog ||  _type == PropertyList || _type == LocalizableStrings) {
         return PBXResourcesBuildPhaseType;
     }
     else if (_type == Archive) {
