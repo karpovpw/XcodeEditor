@@ -25,6 +25,7 @@
 @class XCSubProjectDefinition;
 @class XCTarget;
 @class XCVersionGroup;
+@class XCDyLibDefenition;
 
 /**
 * Represents a _group container in an Xcode project. A group can contain members of type `XCSourceFile` or other
@@ -127,6 +128,12 @@
 * framework definition's copyToDestination flag is yes, otherwise it will be ignored.
 */
 - (void)addFramework:(XCFrameworkDefinition*)frameworkDefinition;
+
+/**
+ * Adds a dylib (.tbd) to the _group. If the _group already contains the dylib, the contents will be updated if the
+ * dylib definition's copyToDestination flag is yes, otherwise it will be ignored.
+ */
+- (void)addDynamicLibrary:(XCDyLibDefenition *)dynamicLibraryDefenition;
 
 /**
 * Removes a framework from the _group

@@ -25,6 +25,8 @@
 #import "XCProject+SubProject.h"
 #import "XcodeMemberType.h"
 #import "XCVersionGroup.h"
+#import "XCDyLibDefenition.h"
+
 
 @implementation XCGroup
 
@@ -213,6 +215,10 @@
     [_project objects][_key] = [self asDictionary];
 }
 
+
+- (void)addDynamicLibrary:(XCDyLibDefenition *)dynamicLibraryDefenition {
+    [self addFramework:dynamicLibraryDefenition];
+}
 
 - (XCSourceFile*)addFramework:(XCFrameworkDefinition *)frameworkDefinition toTargets:(NSArray *)targets
 {
