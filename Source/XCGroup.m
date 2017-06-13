@@ -220,6 +220,10 @@
     [self addFramework:dynamicLibraryDefenition];
 }
 
+- (XCSourceFile *)addDynamicLibrary:(XCDyLibDefenition *)dynamicLibraryDefenition toTargets:(NSArray<XCTarget*>*)targets {
+    return [self addFramework:dynamicLibraryDefenition toTargets:targets];
+}
+
 - (XCSourceFile*)addFramework:(XCFrameworkDefinition *)frameworkDefinition toTargets:(NSArray *)targets
 {
     [self addFramework:frameworkDefinition];

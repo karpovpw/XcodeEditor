@@ -135,6 +135,8 @@
  */
 - (void)addDynamicLibrary:(XCDyLibDefenition *)dynamicLibraryDefenition;
 
+- (XCSourceFile *)addDynamicLibrary:(XCDyLibDefenition *)dynamicLibraryDefenition toTargets:(NSArray<XCTarget*>*)targets;
+
 /**
 * Removes a framework from the _group
 */
