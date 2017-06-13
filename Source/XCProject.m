@@ -44,7 +44,7 @@ NSString *const XCProjectNotFoundException;
     if ((self = [super init])) {
         _filePath = [filePath copy];
         _dataStore = [[NSMutableDictionary alloc]
-                initWithContentsOfFile:[_filePath stringByAppendingPathComponent:@"project.pbxproj"]];
+                      initWithContentsOfFile:[NSString stringWithFormat:@"%@/project.pbxproj", _filePath]];
 
         if (!_dataStore) {
             NSLog(@"project.pbxproj file not found at path: %@", filePath);
