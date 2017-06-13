@@ -47,7 +47,8 @@ NSString *const XCProjectNotFoundException;
                 initWithContentsOfFile:[_filePath stringByAppendingPathComponent:@"project.pbxproj"]];
 
         if (!_dataStore) {
-            [NSException raise:XCProjectNotFoundException format:@"Project file not found at file path %@", _filePath];
+            NSLog(@"project.pbxproj file not found at path: %@", filePath);
+//            [NSException raise:XCProjectNotFoundException format:@"Project file not found at file path %@", _filePath];
         }
 
         _fileOperationQueue =
