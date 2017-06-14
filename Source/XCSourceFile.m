@@ -115,24 +115,51 @@
 
 - (BOOL)canBecomeBuildFile
 {
-    return _type == SourceCodeObjC || _type == SourceCodeObjCPlusPlus || _type == SourceCodeCPlusPlus || _type == XibFile || _type == Framework || _type == ImageResourcePNG || _type == HTML || _type == Bundle || _type == Archive || _type == AssetCatalog || _type == SourceCodeSwift || _type == PropertyList || _type == LocalizableStrings;
+    return _type == SourceCodeObjC ||
+           _type == SourceCodeObjCPlusPlus ||
+           _type == SourceCodeCPlusPlus ||
+           _type == XibFile ||
+           _type == Framework ||
+           _type == CDynamicLibrary ||
+           _type == ImageResourcePNG ||
+           _type == HTML ||
+           _type == Bundle ||
+           _type == Archive ||
+           _type == AssetCatalog ||
+           _type == SourceCodeSwift ||
+           _type == PropertyList ||
+           _type == LocalizableStrings;
 }
 
 
 - (XcodeMemberType)buildPhase
 {
-    if (_type == SourceCodeObjC || _type == SourceCodeObjCPlusPlus || _type == SourceCodeCPlusPlus || _type == XibFile || _type == SourceCodeSwift) {
+    if (_type == SourceCodeObjC ||
+        _type == SourceCodeObjCPlusPlus ||
+        _type == SourceCodeCPlusPlus ||
+        _type == XibFile ||
+        _type == SourceCodeSwift) {
         return PBXSourcesBuildPhaseType;
     }
-    else if (_type == Framework) {
+    
+    else if (_type == Framework ||
+             _type == CDynamicLibrary) {
         return PBXFrameworksBuildPhaseType;
     }
-    else if (_type == ImageResourcePNG || _type == ImageResourceTiff || _type == HTML || _type == Bundle || _type == AssetCatalog ||  _type == PropertyList || _type == LocalizableStrings) {
+    
+    else if (_type == ImageResourcePNG ||
+             _type == ImageResourceTiff ||
+             _type == HTML || _type == Bundle ||
+             _type == AssetCatalog ||
+             _type == PropertyList ||
+             _type == LocalizableStrings) {
         return PBXResourcesBuildPhaseType;
     }
+    
     else if (_type == Archive) {
         return PBXFrameworksBuildPhaseType;
     }
+    
     return PBXNilType;
 }
 

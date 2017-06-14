@@ -179,57 +179,64 @@
     [_project removeObjectWithKey:[sourceFile key]];
 }
 
-- (void)addFramework:(XCFrameworkDefinition *)frameworkDefinition
-{
-    if (([self memberWithDisplayName:[frameworkDefinition fileName]]) == nil) {
-        NSLog(@"frame doesnt exists. creating %@", [frameworkDefinition fileName]);
+- (void)addLibrary:(XCFrameworkDefinition *)libraryDefenition type:(XcodeSourceFileType)type {
+    if (([self memberWithDisplayName:[libraryDefenition fileName]]) == nil) {
+        NSLog(@"lib doesnt exists. creating %@", [libraryDefenition fileName]);
         NSLog(@"existing members: %@", [self members]);
         NSDictionary *fileReference;
-        if ([frameworkDefinition copyToDestination]) {
-            fileReference = [self makeFileReferenceWithPath:[frameworkDefinition fileName] name:nil type:Framework
-                                                 sourceTree:frameworkDefinition.sourceTree];
-            BOOL copyFramework = NO;
-            if ([frameworkDefinition fileOperationType] == XCFileOperationTypeOverwrite) {
-                copyFramework = YES;
-            } else if ([frameworkDefinition fileOperationType] == XCFileOperationTypeAcceptExisting) {
-                NSString *frameworkName = [[frameworkDefinition filePath] lastPathComponent];
-                if (![_fileOperationQueue fileWithName:frameworkName
+        if ([libraryDefenition copyToDestination]) {
+            fileReference = [self makeFileReferenceWithPath:[libraryDefenition fileName] name:nil type:type
+                                                 sourceTree:libraryDefenition.sourceTree];
+            BOOL copy = NO;
+            if ([libraryDefenition fileOperationType] == XCFileOperationTypeOverwrite) {
+                copy = YES;
+            } else if ([libraryDefenition fileOperationType] == XCFileOperationTypeAcceptExisting) {
+                NSString *libName = [[libraryDefenition filePath] lastPathComponent];
+                if (![_fileOperationQueue fileWithName:libName
                               existsInProjectDirectory:[self pathRelativeToProjectRoot]]) {
-                    copyFramework = YES;
+                    copy = YES;
                 }
-
+                
             }
-            if (copyFramework) {
-                [_fileOperationQueue queueFrameworkWithFilePath:[frameworkDefinition filePath]
+            if (copy) {
+                [_fileOperationQueue queueFrameworkWithFilePath:[libraryDefenition filePath]
                                                     inDirectory:[self pathRelativeToProjectRoot]];
             }
         } else {
-            NSString *path = [frameworkDefinition filePath];
-            NSString *name = [frameworkDefinition fileName];
-            fileReference = [self makeFileReferenceWithPath:path name:name type:Framework sourceTree:frameworkDefinition.sourceTree];
+            NSString *path = [libraryDefenition filePath];
+            NSString *name = [libraryDefenition fileName];
+            fileReference = [self makeFileReferenceWithPath:path name:name type:type sourceTree:libraryDefenition.sourceTree];
         }
-        NSString *frameworkKey = [[XCKeyBuilder forItemNamed:[frameworkDefinition fileName]] build];
-        [_project objects][frameworkKey] = fileReference;
-        [self addMemberWithKey:frameworkKey];
+        NSString *libKey = [[XCKeyBuilder forItemNamed:[libraryDefenition fileName]] build];
+        [_project objects][libKey] = fileReference;
+        [self addMemberWithKey:libKey];
     }
     [_project objects][_key] = [self asDictionary];
 }
 
+- (void)addFramework:(XCFrameworkDefinition *)frameworkDefinition {
+    [self addLibrary:frameworkDefinition type:Framework];
+}
 
 - (void)addDynamicLibrary:(XCDyLibDefenition *)dynamicLibraryDefenition {
-    [self addFramework:dynamicLibraryDefenition];
+    [self addLibrary:dynamicLibraryDefenition type:CDynamicLibrary];
+}
+
+- (XCSourceFile*)addLibrary:(XCFrameworkDefinition *)library toTargets:(NSArray *)targets type:(XcodeSourceFileType)type
+{
+    [self addLibrary:library type:type];
+    XCSourceFile *sourceRef = (XCSourceFile *) [self memberWithDisplayName:[library fileName]];
+    [self addSourceFile:sourceRef toTargets:targets];
+    return sourceRef;
 }
 
 - (XCSourceFile *)addDynamicLibrary:(XCDyLibDefenition *)dynamicLibraryDefenition toTargets:(NSArray<XCTarget*>*)targets {
-    return [self addFramework:dynamicLibraryDefenition toTargets:targets];
+    return [self addLibrary:dynamicLibraryDefenition toTargets:targets type:CDynamicLibrary];
 }
 
 - (XCSourceFile*)addFramework:(XCFrameworkDefinition *)frameworkDefinition toTargets:(NSArray *)targets
 {
-    [self addFramework:frameworkDefinition];
-    XCSourceFile *frameworkSourceRef = (XCSourceFile *) [self memberWithDisplayName:[frameworkDefinition fileName]];
-    [self addSourceFile:frameworkSourceRef toTargets:targets];
-    return frameworkSourceRef;
+    return [self addLibrary:frameworkDefinition toTargets:targets type:Framework];
 }
 
 - (void) removeFramework:(XCFrameworkDefinition *)frameworkDefinition fromTargets:(NSArray *)targets
