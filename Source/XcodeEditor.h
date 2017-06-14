@@ -25,6 +25,7 @@ FOUNDATION_EXPORT const unsigned char XcodeEditorVersionString[];
 #import "XCClassDefinition.h"
 #import "XCFileOperationQueue.h"
 #import "XCFrameworkDefinition.h"
+#import "XCDyLibDefenition.h"
 #import "XCProject.h"
 #import "XCSourceFile.h"
 #import "XCSourceFileDefinition.h"
