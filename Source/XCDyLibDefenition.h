@@ -6,7 +6,8 @@
 //  Copyright © 2017 appsquickly. All rights reserved.
 //
 
-#import <XcodeEditor/XcodeEditor.h>
+#import "XCFrameworkDefinition.h"
+
 
 @interface XCDyLibDefenition : XCFrameworkDefinition
 
