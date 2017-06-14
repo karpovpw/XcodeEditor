@@ -21,7 +21,7 @@
 		5DC6E7591C6B72B9008FA743 /* XCVersionGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC6E7571C6B72B9008FA743 /* XCVersionGroup.m */; };
 		5DC6E75B1C6B7457008FA743 /* XCBuildFile.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DC6E75A1C6B7457008FA743 /* XCBuildFile.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6BE8FDB81C01C190001EF5B3 /* XcodeEditor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BE8FDAD1C01C190001EF5B3 /* XcodeEditor.framework */; };
-		9C27DD661EF01E47003E2A8C /* XCDyLibDefenition.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C27DD641EF01E47003E2A8C /* XCDyLibDefenition.h */; };
+		9C27DD661EF01E47003E2A8C /* XCDyLibDefenition.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C27DD641EF01E47003E2A8C /* XCDyLibDefenition.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9C27DD671EF01E47003E2A8C /* XCDyLibDefenition.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C27DD651EF01E47003E2A8C /* XCDyLibDefenition.m */; };
 		BA7980BF50D23B7BEF646CEB /* XCProjectBuildConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = BA79825B6294137CFC2609B9 /* XCProjectBuildConfig.m */; };
 		BA7980C2CFE1088A485DEF43 /* XCTestResourceUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = BA79870D516A14BE1922F109 /* XCTestResourceUtils.m */; };
