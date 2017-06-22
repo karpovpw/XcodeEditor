@@ -30,7 +30,7 @@ static NSDictionary* NSDictionaryWithXCFileReferenceTypes()
             @"file.xib"                                 : @(XibFile),
             @"image.png"                                : @(ImageResourcePNG),
             @"image.tiff"                               : @(ImageResourceTiff),
-            @"wrapper.cfbundle"                         : @(Bundle),
+            @"wrapper.plug-in"                          : @(Bundle),
             @"archive.ar"                               : @(Archive),
             @"text.html"                                : @(HTML),
             @"text"                                     : @(TEXT),
