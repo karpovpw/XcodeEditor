@@ -39,6 +39,8 @@
 
 - (id)initWithName:(NSString*)name data:(NSData*)data type:(XcodeSourceFileType)type;
 
+- (id)initWithName:(NSString*)name type:(XcodeSourceFileType)type;
+
 - (NSString *)fileName;
 
 
