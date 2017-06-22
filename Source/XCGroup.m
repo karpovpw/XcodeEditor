@@ -234,6 +234,16 @@
     return [self addLibrary:dynamicLibraryDefenition toTargets:targets type:CDynamicLibrary];
 }
 
+- (void)addBundle:(XCSourceFileDefinition *)sourceFileDefinition toTargets:(NSArray<XCTarget *> *)targets {
+    [self makeGroupMemberWithName:[sourceFileDefinition sourceFileName]
+        type:[sourceFileDefinition type]
+        fileOperationStyle:[sourceFileDefinition fileOperationType]];
+    [_project objects][_key] = [self asDictionary];
+
+    XCSourceFile *frameworkSourceRef = (XCSourceFile *) [self memberWithDisplayName:[sourceFileDefinition fileName]];
+    [self addSourceFile:frameworkSourceRef toTargets:targets];
+}
+
 - (XCSourceFile*)addFramework:(XCFrameworkDefinition *)frameworkDefinition toTargets:(NSArray *)targets
 {
     return [self addLibrary:frameworkDefinition toTargets:targets type:Framework];
@@ -722,6 +732,36 @@
 
 //-------------------------------------------------------------------------------------------
 
+- (void)makeGroupMemberWithName:(NSString *)name type:(XcodeSourceFileType)type
+             fileOperationStyle:(XCFileOperationType)fileOperationStyle
+{
+    
+    NSString *filePath;
+    XCSourceFile *currentSourceFile = (XCSourceFile *) [self memberWithDisplayName:name];
+    if ((currentSourceFile) == nil) {
+        NSString *refName = nil;
+        if (type == AssetCatalog) {
+            refName = [name lastPathComponent];
+        }
+        NSDictionary *reference = [self makeFileReferenceWithPath:name name:refName type:type];
+        NSString *fileKey = [[XCKeyBuilder forItemNamed:name] build];
+        [_project objects][fileKey] = reference;
+        [self addMemberWithKey:fileKey];
+        filePath = [self pathRelativeToProjectRoot];
+    } else {
+        filePath = [[currentSourceFile pathRelativeToProjectRoot] stringByDeletingLastPathComponent];
+    }
+    
+    BOOL writeFile = NO;
+    if (fileOperationStyle == XCFileOperationTypeOverwrite) {
+        writeFile = YES;
+        [_fileOperationQueue fileWithName:name existsInProjectDirectory:filePath];
+    } else if (fileOperationStyle == XCFileOperationTypeAcceptExisting &&
+               ![_fileOperationQueue fileWithName:name existsInProjectDirectory:filePath]) {
+        writeFile = YES;
+    }
+}
+
 - (void)makeGroupMemberWithName:(NSString *)name contents:(id)contents type:(XcodeSourceFileType)type
              fileOperationStyle:(XCFileOperationType)fileOperationStyle
 {
@@ -905,6 +945,22 @@
 //-------------------------------------------------------------------------------------------
 
 #pragma mark Dictionary Representations
+
+- (NSDictionary *)makeFileReferenceWithPath:(NSString *)path name:(NSString *)name type:(XcodeSourceFileType)type
+{
+    NSMutableDictionary *reference = [NSMutableDictionary dictionary];
+    reference[@"isa"] = [NSString xce_stringFromMemberType:PBXFileReferenceType];
+    reference[@"fileEncoding"] = @"4";
+    reference[@"lastKnownFileType"] = NSStringFromXCSourceFileType(type);
+    if (name != nil) {
+        reference[@"name"] = [name lastPathComponent];
+    }
+    if (path != nil) {
+        reference[@"path"] = path;
+    }
+    reference[@"sourceTree"] = @"<group>";
+    return reference;
+}
 
 - (NSDictionary *)makeFileReferenceWithPath:(NSString *)path name:(NSString *)name type:(XcodeSourceFileType)type
                                  sourceTree:(XcodeSourceTreeType)sourceTree

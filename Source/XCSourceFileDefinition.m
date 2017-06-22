@@ -81,5 +81,10 @@
     return self;
 }
 
+- (NSString *)fileName
+{
+    return [[_sourceFileName lastPathComponent] stringByReplacingOccurrencesOfString:@"/" withString:@""];
+}
+
 
 @end
